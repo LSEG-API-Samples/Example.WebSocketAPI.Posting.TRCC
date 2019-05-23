@@ -1,9 +1,9 @@
-#|-----------------------------------------------------------------------------
-#|            This source code is provided under the Apache 2.0 license      --
-#|  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
-#|                See the project's LICENSE.md for details.                  --
-#|           Copyright Thomson Reuters 2017. All rights reserved.            --
-#|-----------------------------------------------------------------------------
+# |-----------------------------------------------------------------------------
+# |            This source code is provided under the Apache 2.0 license      --
+# |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
+# |                See the project's LICENSE.md for details.                  --
+# |           Copyright Thomson Reuters 2017. All rights reserved.            --
+# |-----------------------------------------------------------------------------
 
 
 #!/usr/bin/env python
@@ -43,25 +43,26 @@ def process_message(ws, message_json):
             if message_domain == "Login":
                 process_login_response(ws, message_json)
     elif message_type == "Ping":
-        pong_json = { 'Type':'Pong' }
+        pong_json = {'Type': 'Pong'}
         ws.send(json.dumps(pong_json))
         print("SENT:")
-        print(json.dumps(pong_json, sort_keys=True, indent=2, separators=(',', ':')))
+        print(json.dumps(pong_json, sort_keys=True,
+                         indent=2, separators=(',', ':')))
 
     # If our TRI stream is now open, we can start sending posts.
     global next_post_time
-    if  ('ID' in message_json and message_json['ID'] == 2 and next_post_time == 0 and
+    if ('ID' in message_json and message_json['ID'] == 2 and next_post_time == 0 and
             (not 'State' in message_json or message_json['State']['Stream'] == "Open" and message_json['State']['Data'] == "Ok")):
         next_post_time = time.time() + 3
 
 
 def process_login_response(ws, message_json):
     """ Send item request """
-    # send Off Stream Post 
-    print("Sending Off-Stream Post to server")
+    # send Off Stream Post
+    print("Sending Off-Stream Post to TREP Server")
     send_market_price_post(ws)
-    #print("Sending Item Request to server")
-    #send_market_price_request(ws)
+    # print("Sending Item Request to server")
+    # send_market_price_request(ws)
 
 
 def send_market_price_request(ws):
@@ -78,36 +79,43 @@ def send_market_price_request(ws):
     print("SENT:")
     print(json.dumps(mp_req_json, sort_keys=True, indent=2, separators=(',', ':')))
 
+
 def send_market_price_post(ws):
     global post_id
-    """ Send a post message containing market-price content for TRI.N """
+    """ Send a post message containing market-price content to TRCC """
 
     mp_post_json_offstream = {
-        "Domain":"MarketPrice",
-        "Ack":True,
-        "PostID":1,
-        "PostUserInfo":{
-            "Address":"172.20.110.92",
-            "UserID":14736
-        }, 
-        "Key":{
-        "Name":'WASIN.BK', 
-        "Service": 'API_ATS'
+        "Domain": "MarketPrice",
+        "Ack": True,
+        "PostID": 1,
+        "PostUserInfo": {
+            "Address": "172.20.110.92",
+            "UserID": 14736
         },
-        "Message":{
-            "ID":0,
-            "Type":"Update",
-            "Domain":"MarketPrice",
-            "Fields":{"BID":10.0, "ASK": 10.5}
+        "Key": {
+            "Name": 'TRCCTEST12',
+            "Service": 'TRCC'
         },
-        "Type":"Post",
-        "ID":1
+        "Message": {
+            "ID": 0,
+            "Type": "Update",
+            "Domain": "MarketPrice",
+            "Fields": {"BID": 16.0, "ASK": 18.56, "PRIMACT_1": 26.4},
+            "Key": {
+                "Name": 'TRCCTEST12',
+                "Service": 'TRCC'
+            }
+        },
+        "Type": "Post",
+        "ID": 1
     }
 
     ws.send(json.dumps(mp_post_json_offstream))
     print("SENT:")
-    print(json.dumps(mp_post_json_offstream, sort_keys=True, indent=2, separators=(',', ':')))
+    print(json.dumps(mp_post_json_offstream,
+                     sort_keys=True, indent=2, separators=(',', ':')))
     post_id += 1
+
 
 def send_login_request(ws):
     """ Generate a login request from command line data (or defaults) and send """
@@ -167,13 +175,16 @@ if __name__ == "__main__":
 
     # Get command line parameters
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "", ["help", "hostname=", "port=", "app_id=", "user=", "position="])
+        opts, args = getopt.getopt(sys.argv[1:], "", [
+                                   "help", "hostname=", "port=", "app_id=", "user=", "position="])
     except getopt.GetoptError:
-        print('Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+        print(
+            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
-            print('Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+            print(
+                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
@@ -190,10 +201,10 @@ if __name__ == "__main__":
     ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
     print("Connecting to WebSocket " + ws_address + " ...")
     web_socket_app = websocket.WebSocketApp(ws_address, header=['User-Agent: Python'],
-                                        on_message=on_message,
-                                        on_error=on_error,
-                                        on_close=on_close,
-                                        subprotocols=['tr_json2'])
+                                            on_message=on_message,
+                                            on_error=on_error,
+                                            on_close=on_close,
+                                            subprotocols=['tr_json2'])
     web_socket_app.on_open = on_open
 
     # Event loop
@@ -203,8 +214,5 @@ if __name__ == "__main__":
     try:
         while True:
             time.sleep(1)
-            if next_post_time != 0 and time.time() > next_post_time:
-                # send_market_price_post(web_socket_app)
-                next_post_time = time.time() + 3
     except KeyboardInterrupt:
         web_socket_app.close()
