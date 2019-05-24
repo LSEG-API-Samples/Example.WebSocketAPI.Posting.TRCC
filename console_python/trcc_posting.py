@@ -7,7 +7,7 @@
 
 
 #!/usr/bin/env python
-""" Simple example of posting Market Price JSON data using Websockets """
+""" Simple example of posting Market Price JSON data To TRCC via TREP 3 using Websockets """
 
 import sys
 import time
@@ -31,6 +31,12 @@ next_post_time = 0
 web_socket_app = None
 web_socket_open = False
 post_id = 1
+bid_value = 22.0
+ask_value = 25.0
+primact_1_value = 116.0
+
+post_servicename = 'TRCC'
+post_itemname = 'TRCCTEST12'
 
 
 def process_message(ws, message_json):
@@ -51,9 +57,10 @@ def process_message(ws, message_json):
 
     # If our TRI stream is now open, we can start sending posts.
     global next_post_time
-    if ('ID' in message_json and message_json['ID'] == 2 and next_post_time == 0 and
+    if ('ID' in message_json and message_json['ID'] == 1 and next_post_time == 0 and
             (not 'State' in message_json or message_json['State']['Stream'] == "Open" and message_json['State']['Data'] == "Ok")):
         next_post_time = time.time() + 3
+        print('Here')
 
 
 def process_login_response(ws, message_json):
@@ -82,30 +89,41 @@ def send_market_price_request(ws):
 
 def send_market_price_post(ws):
     global post_id
+    global bid_value
+    global ask_value
+    global primact_1_value
     """ Send a post message containing market-price content to TRCC """
+
+    update_fields = {
+        "BID": bid_value,
+        "ASK": ask_value,
+        "PRIMACT_1": primact_1_value
+    }
+
+    payload_json = {
+        "ID": 0,
+        "Type": "Update",
+        "Domain": "MarketPrice",
+        "Fields": update_fields,
+        "Key": {
+            "Name": post_itemname,
+            "Service": post_servicename
+        }
+    }
 
     mp_post_json_offstream = {
         "Domain": "MarketPrice",
         "Ack": True,
-        "PostID": 1,
+        "PostID": post_id,
         "PostUserInfo": {
             "Address": "172.20.110.92",
             "UserID": 14736
         },
         "Key": {
-            "Name": 'TRCCTEST12',
-            "Service": 'TRCC'
+            "Name": post_itemname,
+            "Service": post_servicename
         },
-        "Message": {
-            "ID": 0,
-            "Type": "Update",
-            "Domain": "MarketPrice",
-            "Fields": {"BID": 16.0, "ASK": 18.56, "PRIMACT_1": 26.4},
-            "Key": {
-                "Name": 'TRCCTEST12',
-                "Service": 'TRCC'
-            }
-        },
+        "Message": payload_json,
         "Type": "Post",
         "ID": 1
     }
@@ -115,6 +133,9 @@ def send_market_price_post(ws):
     print(json.dumps(mp_post_json_offstream,
                      sort_keys=True, indent=2, separators=(',', ':')))
     post_id += 1
+    bid_value += 1
+    ask_value += 1
+    primact_1_value += 1
 
 
 def send_login_request(ws):
@@ -213,6 +234,10 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(1)
+            time.sleep(30)
+            if next_post_time != 0 and time.time() > next_post_time:
+                print('if next_post_time != 0 and time.time() > next_post_time:')
+                send_market_price_post(web_socket_app)
+                next_post_time = time.time() + 3
     except KeyboardInterrupt:
         web_socket_app.close()
