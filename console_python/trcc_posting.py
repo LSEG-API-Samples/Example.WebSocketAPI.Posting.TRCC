@@ -20,23 +20,28 @@ import os
 from threading import Thread, Event
 
 # Global Default Variables
-hostname = '172.20.33.30'
+hostname = '127.0.0.1'
 port = '15000'
 user = 'root'
 app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
+post_servicename = 'TRCC'
+post_itemname = 'CONTRIBUTION_RIC'
+subscribe_servicename = 'ELEKTRON_DD'
+subscribe_itemname = post_itemname
 
 # Global Variables
 next_post_time = 0
 web_socket_app = None
 web_socket_open = False
 post_id = 1
-bid_value = 22.0
-ask_value = 25.0
-primact_1_value = 116.0
+bid_value = 34.25
+ask_value = 35.48
+primact_1_value = 116.50
 
-post_servicename = 'TRCC'
-post_itemname = 'TRCCTEST12'
+
+#post_servicename = 'API_ATS'
+#post_itemname = 'WASIN.BK'
 
 
 def process_message(ws, message_json):
@@ -48,6 +53,10 @@ def process_message(ws, message_json):
             message_domain = message_json['Domain']
             if message_domain == "Login":
                 process_login_response(ws, message_json)
+        elif message_json['Key']['Name'] == subscribe_itemname:
+            # send Off Stream Post
+            print("Sending Off-Stream Post to TREP Server")
+            send_market_price_post(ws)
     elif message_type == "Ping":
         pong_json = {'Type': 'Pong'}
         ws.send(json.dumps(pong_json))
@@ -65,11 +74,11 @@ def process_message(ws, message_json):
 
 def process_login_response(ws, message_json):
     """ Send item request """
+    print("Sending Item Request to server")
+    send_market_price_request(ws)
     # send Off Stream Post
-    print("Sending Off-Stream Post to TREP Server")
-    send_market_price_post(ws)
-    # print("Sending Item Request to server")
-    # send_market_price_request(ws)
+    #print("Sending Off-Stream Post to TREP Server")
+    # send_market_price_post(ws)
 
 
 def send_market_price_request(ws):
@@ -77,8 +86,8 @@ def send_market_price_request(ws):
     mp_req_json = {
         'ID': 2,
         'Key': {
-            'Name': 'WASIN.BK',
-            'Service': 'API_ATS'
+            'Name': subscribe_itemname,
+            'Service': subscribe_servicename
         },
         'Streaming': True
     }
@@ -197,15 +206,16 @@ if __name__ == "__main__":
     # Get command line parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", [
-                                   "help", "hostname=", "port=", "app_id=", "user=", "position="])
+                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "item=", "post_service=", "item_service="])
+        print(opts)
     except getopt.GetoptError:
         print(
-            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post/subscribe item name] [--post_service TRCC Post Service] [--item_service item subscription service] [--help] ')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
             print(
-                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post/subscribe item name] [--post_service TRCC Post Service] [--item_service item subscription service] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
@@ -217,6 +227,12 @@ if __name__ == "__main__":
             user = arg
         elif opt in ("--position"):
             position = arg
+        elif opt in ("--item"):
+            post_itemname = subscribe_itemname = arg
+        elif opt in ("--post_service"):
+            post_servicename = arg
+        elif opt in ("--item_service"):
+            subscribe_servicename = arg
 
     # Start websocket handshake
     ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
@@ -234,9 +250,9 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(30)
+            time.sleep(15)
             if next_post_time != 0 and time.time() > next_post_time:
-                print('if next_post_time != 0 and time.time() > next_post_time:')
+                #print('if next_post_time != 0 and time.time() > next_post_time:')
                 send_market_price_post(web_socket_app)
                 next_post_time = time.time() + 3
     except KeyboardInterrupt:
