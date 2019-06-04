@@ -2,12 +2,12 @@
 # |            This source code is provided under the Apache 2.0 license      --
 # |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
 # |                See the project's LICENSE.md for details.                  --
-# |           Copyright Thomson Reuters 2017. All rights reserved.            --
+# |           Copyright Refinitiv 2019. All rights reserved.                  --
 # |-----------------------------------------------------------------------------
 
 
 #!/usr/bin/env python
-""" Simple example of posting Market Price JSON data To TRCC via TREP 3 using Websockets """
+""" Simple example of posting Market Price JSON data To TRCC via TREP 3.2.x using Websockets """
 
 import sys
 import time
@@ -25,10 +25,9 @@ port = '15000'
 user = 'root'
 app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
-post_servicename = 'TRCC'
-post_itemname = 'CONTRIBUTION_RIC'
-subscribe_servicename = 'ELEKTRON_DD'
-subscribe_itemname = post_itemname
+service_name = 'TRCC'
+post_item_name = 'CONTRIBUTION_RIC'
+login_id = 1
 
 # Global Variables
 next_post_time = 0
@@ -38,10 +37,6 @@ post_id = 1
 bid_value = 34.25
 ask_value = 35.48
 primact_1_value = 116.50
-
-
-#post_servicename = 'API_ATS'
-#post_itemname = 'WASIN.BK'
 
 
 def process_message(ws, message_json):
@@ -74,26 +69,9 @@ def process_message(ws, message_json):
 
 def process_login_response(ws, message_json):
     """ Send item request """
-    print("Sending Item Request to server")
-    send_market_price_request(ws)
     # send Off Stream Post
-    #print("Sending Off-Stream Post to TREP Server")
-    # send_market_price_post(ws)
-
-
-def send_market_price_request(ws):
-    """ Create and send simple Market Price request """
-    mp_req_json = {
-        'ID': 2,
-        'Key': {
-            'Name': subscribe_itemname,
-            'Service': subscribe_servicename
-        },
-        'Streaming': True
-    }
-    ws.send(json.dumps(mp_req_json))
-    print("SENT:")
-    print(json.dumps(mp_req_json, sort_keys=True, indent=2, separators=(',', ':')))
+    print("Sending Off-Stream Post to TREP Server")
+    send_market_price_post(ws)
 
 
 def send_market_price_post(ws):
@@ -101,23 +79,26 @@ def send_market_price_post(ws):
     global bid_value
     global ask_value
     global primact_1_value
-    """ Send a post message containing market-price content to TRCC """
+    """ Send a post message contains a market-price content to TRCC """
 
-    update_fields = {
+    # Contribution fields
+    contribution_fields = {
         "BID": bid_value,
         "ASK": ask_value,
         "PRIMACT_1": primact_1_value
     }
 
-    payload_json = {
+    mp_post_key = {
+        "Name": post_item_name,
+        "Service": service_name
+    }
+
+    contribution_payload_json = {
         "ID": 0,
         "Type": "Update",
         "Domain": "MarketPrice",
-        "Fields": update_fields,
-        "Key": {
-            "Name": post_itemname,
-            "Service": post_servicename
-        }
+        "Fields": contribution_fields,
+        "Key": {}
     }
 
     mp_post_json_offstream = {
@@ -125,17 +106,18 @@ def send_market_price_post(ws):
         "Ack": True,
         "PostID": post_id,
         "PostUserInfo": {
-            "Address": "172.20.110.92",
-            "UserID": 14736
+            "Address": position,
+            "UserID": int(app_id)
         },
-        "Key": {
-            "Name": post_itemname,
-            "Service": post_servicename
-        },
-        "Message": payload_json,
+        "Key": {},
+        "Message": {},
         "Type": "Post",
-        "ID": 1
+        "ID": login_id
     }
+
+    contribution_payload_json["Key"] = mp_post_key
+    mp_post_json_offstream["Key"] = mp_post_key
+    mp_post_json_offstream["Message"] = contribution_payload_json
 
     ws.send(json.dumps(mp_post_json_offstream))
     print("SENT:")
@@ -150,7 +132,7 @@ def send_market_price_post(ws):
 def send_login_request(ws):
     """ Generate a login request from command line data (or defaults) and send """
     login_json = {
-        'ID': 1,
+        'ID': login_id,
         'Domain': 'Login',
         'Key': {
             'Name': '',
@@ -206,16 +188,16 @@ if __name__ == "__main__":
     # Get command line parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", [
-                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "item=", "post_service=", "item_service="])
+                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "item=", "service="])
         print(opts)
     except getopt.GetoptError:
         print(
-            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post/subscribe item name] [--post_service TRCC Post Service] [--item_service item subscription service] [--help] ')
+            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post item name] [--service TRCC Post Service]  [--help] ')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
             print(
-                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post/subscribe item name] [--post_service TRCC Post Service] [--item_service item subscription service] [--help]')
+                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post item name] [--service TRCC Post Service] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
@@ -228,11 +210,9 @@ if __name__ == "__main__":
         elif opt in ("--position"):
             position = arg
         elif opt in ("--item"):
-            post_itemname = subscribe_itemname = arg
-        elif opt in ("--post_service"):
-            post_servicename = arg
-        elif opt in ("--item_service"):
-            subscribe_servicename = arg
+            post_item_name = arg
+        elif opt in ("--service"):
+            service_name = arg
 
     # Start websocket handshake
     ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
@@ -250,9 +230,8 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(15)
+            time.sleep(10)
             if next_post_time != 0 and time.time() > next_post_time:
-                #print('if next_post_time != 0 and time.time() > next_post_time:')
                 send_market_price_post(web_socket_app)
                 next_post_time = time.time() + 3
     except KeyboardInterrupt:
