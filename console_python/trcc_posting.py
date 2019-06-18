@@ -39,7 +39,7 @@ ask_value = 35.48
 primact_1_value = 116.50
 
 
-def process_message(ws, message_json):
+def process_message(ws, message_json):  # Process all incoming messages.
     """ Parse at high level and output JSON of message """
     message_type = message_json['Type']
 
@@ -49,7 +49,7 @@ def process_message(ws, message_json):
             if message_domain == "Login":
                 process_login_response(ws, message_json)
         elif message_json['Key']['Name'] == subscribe_itemname:
-            # send Off Stream Post
+            """ send Off Stream Post """
             print("Sending Off-Stream Post to TREP Server")
             send_market_price_post(ws)
     elif message_type == "Ping":
@@ -59,7 +59,7 @@ def process_message(ws, message_json):
         print(json.dumps(pong_json, sort_keys=True,
                          indent=2, separators=(',', ':')))
 
-    # If our TRI stream is now open, we can start sending posts.
+    """ If our TRI stream is now open, we can start sending posts. """
     global next_post_time
     if ('ID' in message_json and message_json['ID'] == 1 and next_post_time == 0 and
             (not 'State' in message_json or message_json['State']['Stream'] == "Open" and message_json['State']['Data'] == "Ok")):
@@ -67,13 +67,14 @@ def process_message(ws, message_json):
         print('Here')
 
 
+# Process incoming Login Refresh Response message.
 def process_login_response(ws, message_json):
-    """ Send item request """
-    # send Off Stream Post
+    """ Send Off-Stream Post """
     print("Sending Off-Stream Post to TREP Server")
     send_market_price_post(ws)
 
 
+# Create JSON Off-Stream Post message and sends it to ADS server.
 def send_market_price_post(ws):
     global post_id
     global bid_value
@@ -81,18 +82,20 @@ def send_market_price_post(ws):
     global primact_1_value
     """ Send a post message contains a market-price content to TRCC """
 
-    # Contribution fields
+    """ Contribution fields """
     contribution_fields = {
         "BID": bid_value,
         "ASK": ask_value,
         "PRIMACT_1": primact_1_value
     }
 
+    """ OMM Post msg Key """
     mp_post_key = {
         "Name": post_item_name,
         "Service": service_name
     }
 
+    """ OMM Post Payload """
     contribution_payload_json = {
         "ID": 0,
         "Type": "Update",
@@ -101,6 +104,7 @@ def send_market_price_post(ws):
         "Key": {}
     }
 
+    """ OMM Off-Stream Post message """
     mp_post_json_offstream = {
         "Domain": "MarketPrice",
         "Ack": True,
@@ -123,12 +127,15 @@ def send_market_price_post(ws):
     print("SENT:")
     print(json.dumps(mp_post_json_offstream,
                      sort_keys=True, indent=2, separators=(',', ':')))
+
+    """ increase post data value """
     post_id += 1
     bid_value += 1
     ask_value += 1
     primact_1_value += 1
 
 
+# Create JSON Login request message and sends it to ADS server.
 def send_login_request(ws):
     """ Generate a login request from command line data (or defaults) and send """
     login_json = {
