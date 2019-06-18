@@ -166,10 +166,12 @@ RECEIVED:
 
 ## References
 * [Refinitiv Elektron SDK Family page](https://developers.refinitiv.com/elektron) on the [Refinitiv Developer Community](https://developers.thomsonreuters.com/) web site.
-* [Refinitiv Elektron WebSocket API page](https://developers.refinitiv.com/websocket-api) 
-* [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw)
-* [Contributing your data to Thomson Reuters article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters)
-* [Refinitiv Elektron: RIC Search](https://developers.refinitiv.com/elektron/websocket-api/dev-tools?type=ric)
-* [Refinitiv Data Model Discovery page](https://refinitiv.fixspec.com/specserver/specs/reuters): Explore TR data models, content definitions and data update behaviors
+* [Refinitiv Elektron WebSocket API page](https://developers.refinitiv.com/websocket-api).
+* [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
+* [Contributing your data to Thomson Reuters article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters).
+* [Refinitiv Elektron: RIC Search](https://developers.refinitiv.com/elektron/websocket-api/dev-tools?type=ric).
+* [Refinitiv Data Model Discovery page](https://refinitiv.fixspec.com/specserver/specs/reuters): Explore TR data models, content definitions and data update behaviors.
+* [EMA Java Tutorial - Posting data to TR Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-java/learning?content=41885&type=learning_material_item).
+* [EMA C++ Tutorial - Posting data to TR Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-cc/learning?content=26452&type=learning_material_item).
 
 For any question related to this example or Elektron WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
