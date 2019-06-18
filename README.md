@@ -23,11 +23,11 @@ If you are interested to contribute data using the RSSL connection (with or with
 
 ## Contribution Setups
 
-The Elektron WebSocket API cannot connect to TRCC server directly (only Elektron SDK C++ and Java APIs support that feature). It requires TREP version 3.2.1 (and above) to take care of the JSON-OMM conversion, TRCC connection and a login process for the WebSocket application.
+The Elektron WebSocket API cannot connect to TRCC server directly (only Elektron SDK C++ and Java APIs support that feature). It requires TREP version 3.2.1 (and above) to take care of the JSON-OMM conversion, TRCC connection and login process for the WebSocket application.
 
-![Figure-1](images/diagram_draft.png "TRCC Contribution Diagram") 
+![Figure-1](images/diagram_trcc_ws.png "TRCC Contribution Diagram") 
 
-The TREP infrastructure connects to TRCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. You can find more detail regarding the TREP-TRCC configurations in [Contributing your data to Thomson Reuters article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters) page (*Contribution through TREP* section). This example also contain example ADH-TRCC configurations in *trep_config/rmds_trcc.cnf* file.
+The TREP infrastructure connects to TRCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. The TSA adapter is already packaged with the ADH version 3.2, and needs to be configured. You can find more detail regarding the TREP-TRCC configurations in [Contributing your data to Thomson Reuters article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters) page (*Contribution through TREP* section). This example also contain example ADH-TRCC configurations in *trep_config/rmds_trcc.cnf* file.
 
 ## Prerequisite
 This example requires the following dependencies softwares and libraries.
@@ -41,6 +41,7 @@ This example requires the following dependencies softwares and libraries.
 - The Python example has been qualified with Python versions 3.6.8. 
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
+- It is not advisable to change the ADH configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding ADH-TRCC configuration.
 
 ## Application Files
 This example project contains the following files and folders
