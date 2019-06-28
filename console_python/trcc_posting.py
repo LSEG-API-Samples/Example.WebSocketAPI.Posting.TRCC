@@ -48,10 +48,6 @@ def process_message(ws, message_json):  # Process all incoming messages.
             message_domain = message_json['Domain']
             if message_domain == "Login":
                 process_login_response(ws, message_json)
-        elif message_json['Key']['Name'] == subscribe_itemname:
-            """ send Off Stream Post """
-            print("Sending Off-Stream Post to TREP Server")
-            send_market_price_post(ws)
     elif message_type == "Ping":
         pong_json = {'Type': 'Pong'}
         ws.send(json.dumps(pong_json))
