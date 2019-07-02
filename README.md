@@ -12,7 +12,7 @@ Data Contribution is a means to send your pricing data directly to Refinitiv , f
 
 ## Application Overview
 
-This example shows how to writing an application to contribute your data to TRCC using [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) through Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then sends an off-stream post to contribute item to TRCC server via that TREP. The application is implemented with Python language, but the main concept and post message structures are the same for all technologies. 
+This example shows how to writing an application to contribute your data to TRCC using [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) through Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then sends an off-stream post to contribute item to TRCC server via that TREP. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept and post message structures are the same for all technologies. 
 
 If you are interested to contribute data using the RSSL connection (with or without TREP), please visit the following series of Elektron SDK and TRCC based on your prefer API: 
 * [Contributing your data to Thomson Reuters article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters).
@@ -37,6 +37,7 @@ This example requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
+5. [Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application only)
 5. TRCC username, password and host list credentials. Please reach out to your Refinitiv sales associate to acquire TRCC access credentials.
 
 *Note:* 
@@ -49,11 +50,12 @@ This example requires the following dependencies softwares and libraries.
 This example project contains the following files and folders
 1. *console_python/trcc_posting.py*: The example application file
 2. *console_python/requirements.txt*: The application dependencies configurationf file
-3. *trep_config/rmds_trcc.cnf*: ADH TRCC configurations example file (*not a completed ADH configuration file*)
-4. LICENSE.md: Project's license file
-5. README.md: Project's README file
+3. *notebook_python/trcc_posting_notebook.ipynb*: The example Jupyter Notebook application file
+4. *trep_config/rmds_trcc.cnf*: ADH TRCC configurations example file (*not a completed ADH configuration file*)
+5. LICENSE.md: Project's license file
+6. README.md: Project's README file
 
-## How to run this example
+## How to run this console example
 
 Please be informed that your TREP server (ADS and ADH) should be applied the TRCC configurations and TRCC contribution service should be "Up" before running an example. The TRCC access credentials are required in the connection between ADH server and TRCC server only, not in the application level. 
 
