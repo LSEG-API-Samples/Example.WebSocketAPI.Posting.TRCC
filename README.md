@@ -1,5 +1,5 @@
-# Contributing your data to Thomson Reuters with Elektron WebSocket API
-- Last update: June 2019
+# Contributing your data to Refinitiv with Elektron WebSocket API
+- Last update: July 2019
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: ADS and ADH servers version 3.2.1 and above, TRCC Access Credentials
@@ -37,13 +37,14 @@ This example requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
-5. [Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application only)
+5. [Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application)
 5. TRCC username, password and host list credentials. Please reach out to your Refinitiv sales associate to acquire TRCC access credentials.
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.6.8. 
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
+- You can install Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 - It is not advisable to change the ADH configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding ADH-TRCC configuration.
 
 ## Application Files
@@ -58,6 +59,10 @@ This example project contains the following files and folders
 ## How to run this console example
 
 Please be informed that your TREP server (ADS and ADH) should be applied the TRCC configurations and TRCC contribution service should be "Up" before running an example. The TRCC access credentials are required in the connection between ADH server and TRCC server only, not in the application level. 
+
+![Figure-2](images/adh_trcc.png "ADH TRCC Service is ready") 
+
+![Figure-3](images/ads_trcc.png "ADS TRCC Service is ready") 
 
 1. Unzip or download the example project folder into a directory of your choice. 
 2. Run ```$> pip install -r requestments.txt``` in a console to install all the dependencies libraries.
