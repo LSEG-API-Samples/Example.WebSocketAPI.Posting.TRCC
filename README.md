@@ -1,4 +1,4 @@
-# Contributing your data to Thomson Reuters with Elektron WebSocket API
+# Contributing your data to Refinitiv with Elektron WebSocket API
 - Last update: July 2019
 - Environment: Windows and Linux OS 
 - Compiler: Python
