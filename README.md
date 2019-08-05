@@ -38,7 +38,8 @@ This example requires the following dependencies softwares and libraries.
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
 5. [Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application)
-5. TRCC username, password and host list credentials. Please reach out to your Refinitiv sales associate to acquire TRCC access credentials.
+6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running the console example in Docker only)
+7. TRCC username, password and host list credentials. Please reach out to your Refinitiv sales associate to acquire TRCC access credentials.
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.6.8. 
@@ -51,10 +52,11 @@ This example requires the following dependencies softwares and libraries.
 This example project contains the following files and folders
 1. *console_python/trcc_posting.py*: The example application file
 2. *console_python/requirements.txt*: The application dependencies configurationf file
-3. *notebook_python/trcc_posting_notebook.ipynb*: The example Jupyter Notebook application file
-4. *trep_config/rmds_trcc.cnf*: ADH TRCC configurations example file (*not a completed ADH configuration file*)
-5. LICENSE.md: Project's license file
-6. README.md: Project's README file
+3. *console_python/Dockerfile*: The example application Dockerfile
+4. *notebook_python/trcc_posting_notebook.ipynb*: The example Jupyter Notebook application file
+5. *trep_config/rmds_trcc.cnf*: ADH TRCC configurations example file (*not a completed ADH configuration file*)
+6. LICENSE.md: Project's license file
+7. README.md: Project's README file
 
 ## How to run this console example
 
@@ -65,11 +67,26 @@ Please be informed that your TREP server (ADS and ADH) should be applied the TRC
 ![Figure-3](images/ads_trcc.png "ADS TRCC Service is ready") 
 
 1. Unzip or download the example project folder into a directory of your choice. 
-2. Run ```$> pip install -r requestments.txt``` in a console to install all the dependencies libraries.
-3. Then you can run trcc_posting.py application with the following command
+2. Enter project *console* folder.
+3. Run ```$> pip install -r requestments.txt``` command in a console to install all the dependencies libraries.
+4. Then you can run trcc_posting.py application with the following command
     ```
     $> python trcc_post.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
     ```
+
+## How to run this console example in Docker
+
+1. Unzip or download the example project folder into a directory of your choice. 
+2. Enter *console* folder.
+3. Run ```$> docker build -t <project tag name> .``` command in a console to build an image from a Dockerfile.
+    ```
+    $> docker build -t esdk_ws_trcc_python .
+    ```
+4. Once the build is success, you can create and run the container with the following command
+    ```
+    $> docker run esdk_ws_trcc_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
+    ```
+
 ## Example Results
 ### Initiate and Login to TREP
 ```
