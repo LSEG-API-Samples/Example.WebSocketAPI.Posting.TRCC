@@ -2,12 +2,12 @@
 # |            This source code is provided under the Apache 2.0 license      --
 # |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
 # |                See the project's LICENSE.md for details.                  --
-# |           Copyright Refinitiv 2019. All rights reserved.                  --
+# |           Copyright Refinitiv 2020. All rights reserved.                  --
 # |-----------------------------------------------------------------------------
 
 
 #!/usr/bin/env python
-""" Simple example of posting Market Price JSON data To TRCC via TREP 3.2.x using Websockets """
+""" Simple example of posting Market Price JSON data To RCC via TREP 3.2.x using Websockets """
 
 import sys
 import time
@@ -76,7 +76,7 @@ def send_market_price_post(ws):
     global bid_value
     global ask_value
     global primact_1_value
-    """ Send a post message contains a market-price content to TRCC """
+    """ Send a post message contains a market-price content to RCC """
 
     """ Contribution fields """
     contribution_fields = {
