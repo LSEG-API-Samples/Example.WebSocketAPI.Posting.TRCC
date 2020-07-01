@@ -68,7 +68,7 @@ Please be informed that your TREP server (ADS and ADH) should be applied the TRC
 
 1. Unzip or download the example project folder into a directory of your choice. 
 2. Enter project *console* folder.
-3. Run ```$> pip install -r requestments.txt``` command in a console to install all the dependencies libraries.
+3. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
 4. Then you can run trcc_posting.py application with the following command
     ```
     $> python trcc_post.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
@@ -86,6 +86,8 @@ Please be informed that your TREP server (ADS and ADH) should be applied the TRC
     ```
     $> docker run esdk_ws_trcc_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
     ```
+
+*Note*: If you want to connect a docker application to your *localhost* ADS server, please refer to this [Stack Overflow answer page](https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach).
 
 ## Example Results
 ### Initiate and Login to TREP
