@@ -6,7 +6,7 @@
 
 ## RCC Overview
 
-The Refinitiv Contribution Channel (RCC) (formerly known as TRCC) is a new service for on-boarding content to the Refinitiv. Depending on the client's needs, access to the service will be fulfilled by one or more of the following products: Contributions Channel for TREP, Contributions Channel for Elektron API, Contributions Channel for Spreadsheet. RCC aims for replacing the legacy Market Link IP (MLIP) system.
+The Refinitiv Contribution Channel (RCC - formerly known as TRCC) is a new service for on-boarding content to the Refinitiv. Depending on the client's needs, access to the service will be fulfilled by one or more of the following products: Contributions Channel for TREP, Contributions Channel for Elektron API, Contributions Channel for Spreadsheet. RCC aims for replacing the legacy Market Link IP (MLIP) system.
 
 Data Contribution is a means to send your pricing data directly to Refinitiv , from where it can fan out globally. Leading market participants, such as banks and brokers, use Refinitiv to publish and distribute their information to the community of financial professions, in order to advertise their prices to clients and prospects.
 
@@ -80,11 +80,11 @@ Please be informed that your TREP server (ADS and ADH) should be applied the RCC
 2. Enter *console* folder.
 3. Run ```$> docker build -t <project tag name> .``` command in a console to build an image from a Dockerfile.
     ```
-    $> docker build -t esdk_ws_trcc_python .
+    $> docker build -t esdk_ws_rcc_python .
     ```
 4. Once the build is success, you can create and run the container with the following command
     ```
-    $> docker run esdk_ws_trcc_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
+    $> docker run esdk_ws_rcc_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
     ```
 
 *Note*: If you want to connect a docker application to your *localhost* ADS server, please refer to this [Stack Overflow answer page](https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach).
