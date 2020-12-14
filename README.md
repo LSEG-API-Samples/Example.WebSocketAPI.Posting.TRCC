@@ -1,39 +1,41 @@
-# Contributing your data to Refinitiv with Elektron WebSocket API
-- Last update: July 2019
+# Contributing your data to Refinitiv with WebSocket API and Refinitiv Real-Time Distribution System
+- Last update: December 2020
 - Environment: Windows and Linux OS 
 - Compiler: Python
-- Prerequisite: ADS and ADH servers version 3.2.1 and above, RCC Access Credentials
+- Prerequisite: Refinitiv Real-Time Distribution servers version 3.2.1 and above, RCC Access Credentials
 
 ## RCC Overview
 
-The Refinitiv Contribution Channel (RCC - formerly known as TRCC) is a new service for on-boarding content to the Refinitiv. Depending on the client's needs, access to the service will be fulfilled by one or more of the following products: Contributions Channel for TREP, Contributions Channel for Elektron API, Contributions Channel for Spreadsheet. RCC aims for replacing the legacy Market Link IP (MLIP) system.
+The Refinitiv Contribution Channel (RCC) is a new service for on-boarding content to Refinitiv. Depending on the client's needs, access to the service will be fulfilled by one or more of the following products: Contributions Channel for Refinitiv Real-Time Advanced Distribution Server/Advanced Data Hub Server, Contributions Channel for Real-Time API, Contributions Channel for Spreadsheet. RCC aims for replacing the legacy Market Link IP (MLIP) system.
 
 Data Contribution is a means to send your pricing data directly to Refinitiv , from where it can fan out globally. Leading market participants, such as banks and brokers, use Refinitiv to publish and distribute their information to the community of financial professions, in order to advertise their prices to clients and prospects.
 
 ## Application Overview
 
-This example shows how to writing an application to contribute your data to RCC using [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) through Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then sends an off-stream post to contribute item to RCC server via that TREP. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept and post message structures are the same for all technologies. 
+This example shows how to writing an application to contribute your data to RCC using [Websocket API for Pricing Streaming and Real-Time Service ](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api) (aka WebSocket API) through Refinitiv Real-Time Distribution System (Refinitiv Real-Time Advanced Distribution and Advanced Data Hub servers). The example just connects to Refinitiv Real-Time Advanced Distribution Server via a WebSocket connection, then sends an off-stream post to contribute item to RCC server via that Refinitiv Real-Time Distribution System. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept and post message structures are the same for all technologies. 
 
-If you are interested to contribute data using the RSSL connection (with or without TREP), please visit the following series of Elektron SDK and RCC based on your prefer API: 
-* [Contributing your data to Refinitiv article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters).
-* [EMA Java Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-java/learning?content=41885&type=learning_material_item).
-* [EMA C++ Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-cc/learning?content=26452&type=learning_material_item).
+If you are interested to contribute data using the RSSL connection (with or without Refinitiv Real-Time Distribution System)), please visit the following series of Real-Time SDK and RCC based on your prefer API: 
+* [Contributing your data to Refinitiv article](https://developers.refinitiv.com/en/article-catalog/article/contributing-your-data-refinitiv).
+* [EMA Java Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/tutorials#ema-consumer-posting-data-to-contribution-channel).
+* [EMA C++ Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc/tutorials#ema-consumer-posting-data-to-contribution-channel).
 
-If you are not familiar with Elektron WebSocket API Posting concept, please visit [Contributing Data to TREP using the Websocket API](https://developers.refinitiv.com/article/contributing-data-trep-using-websocket-api) article which will give you a full explanation of the WebSocket API Posting mechanisms and process.
+If you are not familiar with WebSocket API Posting concept, please visit [Contributing Data to Refinitiv Real-Time using the Websocket API](https://developers.refinitiv.com/en/article-catalog/article/contributing-data-trep-using-websocket-api) article which will give you a full explanation of the WebSocket API Posting mechanisms and process.
 
-*Note:* In an off-stream post, the client application can send a post for an item via a Login stream, regardless of whether a data stream first exists. The route of the post is determined by the TREP (ADS and ADH) configuration.
+*Note:* In an off-stream post, the client application can send a post for an item via a Login stream, regardless of whether a data stream first exists. The route of the post is determined by the Refinitiv Real-Time Distribution System configuration.
 
 ## Contribution Setups
 
-The Elektron WebSocket API cannot connect to RCC server directly (only Elektron SDK C++ and Java APIs support that feature). It requires TREP version 3.2.1 (and above) to take care of the JSON-OMM conversion, RCC connection and login process for the WebSocket application.
+**Update (As of November 2020)**: The direct Websocket access to Contributions Channel is coming soon. 
+
+Developers can contributing data to RCC with Real-Time SDK C++/Java (RSSL connection) and WebSocket API (WebSocket connection).  This article is focusing on contributing data via Refinitiv Real-Time Distribution System servers (Real-Time Advanced Distribution and Advanced Data Hub servers).  The servers will take care of the RCC connection, JSON-OMM conversion, and login process for the application.
 
 ![Figure-1](images/diagram_trcc_ws.png "RCC Contribution Diagram") 
 
-The TREP infrastructure connects to RCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. The TSA adapter is already packaged with the ADH version 3.2, and needs to be configured. You can find more detail regarding the TREP-RCC configurations in [Contributing your data to Refinitiv article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters) page (*Contribution through TREP* section). This example also contain example ADH-RCC configurations in *trep_config/rmds_trcc.cnf* file.
+The Refinitiv Real-Time Advanced Data Hub server connects to RCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. The TSA adapter is already packaged with the  Advanced Data Hub version 3.2, and needs to be configured. You can find more detail regarding the Advanced Data Hub-RCC configurations on [Contributing your data to Refinitiv article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters) page. This example also contain example Advanced Data Hub-RCC configurations in *trep_config/rmds_trcc.cnf* file.
 
 ## Prerequisite
 This example requires the following dependencies softwares and libraries.
-1. TREP server (both ADS and ADH) 3.2.x with WebSocket connection.
+1. Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution servers 3.2.x with WebSocket connection.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
@@ -60,7 +62,7 @@ This example project contains the following files and folders
 
 ## How to run this console example
 
-Please be informed that your TREP server (ADS and ADH) should be applied the RCC configurations and RCC contribution service should be "Up" before running an example. The RCC access credentials are required in the connection between ADH server and RCC server only, not in the application level. 
+Please be informed that your Refinitiv Real-Time Advanced Data Hub and Real-Time Advanced Distribution servers should be applied the RCC configurations and RCC contribution service should be "Up" before running an example. The RCC access credentials are required in the connection between ADH server and RCC server only, not in the application level. 
 
 ![Figure-2](images/adh_trcc.png "ADH TRCC Service is ready") 
 
@@ -71,7 +73,7 @@ Please be informed that your TREP server (ADS and ADH) should be applied the RCC
 3. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
 4. Then you can run trcc_posting.py application with the following command
     ```
-    $> python trcc_post.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
+    $> python trcc_post.py --hostname <Real-Time Advanced Distribution server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <Real-Time Advanced Distribution server Contribution Service name>
     ```
 
 ## How to run this console example in Docker
@@ -84,13 +86,13 @@ Please be informed that your TREP server (ADS and ADH) should be applied the RCC
     ```
 4. Once the build is success, you can create and run the container with the following command
     ```
-    $> docker run esdk_ws_rcc_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <ADS Contribution Service name>
+    $> docker run esdk_ws_rcc_python --hostname <Real-Time Advanced Distribution server IP Address/Hostname> --port <WebSocket Port> --item <Contribution item name> --service <Real-Time Advanced Distribution server Contribution Service name>
     ```
 
-*Note*: If you want to connect a docker application to your *localhost* ADS server, please refer to this [Stack Overflow answer page](https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach).
+*Note*: If you want to connect a docker application to your *localhost* Real-Time Advanced Distribution server, please refer to this [Stack Overflow answer page](https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach).
 
 ## Example Results
-### Initiate and Login to TREP
+### Initiate and Login to Real-Time Advanced Distribution server
 ```
 Connecting to WebSocket ws://localhost:15000/WebSocket ...
 WebSocket successfully connected!
@@ -146,7 +148,7 @@ RECEIVED:
 
 ### Contribution data via an Off-Stream Post message
 ```
-Sending Off-Stream Post to TREP Server
+Sending Off-Stream Post to Real-Time Advanced Distribution server
 SENT:
 {
   "Ack":true,
@@ -193,14 +195,14 @@ RECEIVED:
 ```
 
 ## References
-* [Refinitiv Elektron SDK Family page](https://developers.refinitiv.com/elektron) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
-* [Refinitiv Elektron WebSocket API page](https://developers.refinitiv.com/websocket-api).
-* [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
-* [Contributing Data to TREP using the Websocket API article](https://developers.refinitiv.com/article/contributing-data-trep-using-websocket-api).
-* [Contributing your data to Refinitiv article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters).
-* [Refinitiv Elektron: RIC Search](https://developers.refinitiv.com/elektron/websocket-api/dev-tools?type=ric).
-* [Refinitiv Data Model Discovery page](https://refinitiv.fixspec.com/specserver/specs/reuters): Explore TR data models, content definitions and data update behaviors.
-* [EMA Java Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-java/learning?content=41885&type=learning_material_item).
-* [EMA C++ Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/elektron/elektron-sdk-cc/learning?content=26452&type=learning_material_item).
+* [Refinitiv Real-Time & Distribution use case page](https://developers.refinitiv.com/en/use-cases-catalog/refinitiv-real-time) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
+* [Websocket API for Pricing Streaming and Real-Time Services page](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api).
+* [Developer Webinar Recording: Introduction to WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
+* [Contributing Data to Refinitiv Real-Time using the Websocket API article](https://developers.refinitiv.com/en/article-catalog/article/contributing-data-trep-using-websocket-api).
+* [Contributing your data to Refinitiv article](https://developers.refinitiv.com/en/article-catalog/article/contributing-your-data-refinitiv).
+<!--* [Refinitiv Elektron: RIC Search](https://developers.refinitiv.com/elektron/websocket-api/dev-tools?type=ric).
+* [Refinitiv Data Model Discovery page](https://refinitiv.fixspec.com/specserver/specs/reuters): Explore TR data models, content definitions and data update behaviors.-->
+* [EMA Java Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/tutorials#ema-consumer-posting-data-to-contribution-channel).
+* [EMA C++ Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc/tutorials#ema-consumer-posting-data-to-contribution-channel).
 
-For any question related to this example or Elektron WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
+For any question related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
