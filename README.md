@@ -1,5 +1,5 @@
 # Contributing your data to Refinitiv with WebSocket API and Refinitiv Real-Time Distribution System
-- Last update: December 2020
+- Last update: March 2021
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: Refinitiv Real-Time Distribution servers version 3.2.1 and above, RCC Access Credentials
@@ -25,9 +25,21 @@ If you are not familiar with WebSocket API Posting concept, please visit [Contri
 
 ## Contribution Setups
 
-**Update (As of November 2020)**: The direct Websocket access to Contributions Channel is coming soon. 
+**Update (As of March 2021)**: The direct Websocket access to Contributions Channel Tutorial is available [here](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api/tutorials#contributing-data-to-refinitiv-contributions-channel). 
 
-Developers can contributing data to RCC with Real-Time SDK C++/Java (RSSL connection) and WebSocket API (WebSocket connection).  This article is focusing on contributing data via Refinitiv Real-Time Distribution System servers (Real-Time Advanced Distribution and Advanced Data Hub servers).  The servers will take care of the RCC connection, JSON-OMM conversion, and login process for the application.
+Developers can contributing data to RCC with Real-Time SDK C++/Java (RSSL connection) and WebSocket API (WebSocket connection). Currently, there are three methods to contribute data to the RCC. 
+
+1. **Use Refinitiv Real-Time SDKs to directly connect to RCC to contribute data.** To use this method, please refer to the following tutorials:
+  * [ETA C/C++ Consumer - Posting data to Contributions Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc/tutorials#eta-consumer-posting-data-to-contribution-channel)
+  * [EMA C/C++ Consumer - Posting data to Contributions Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc/tutorials#ema-consumer-posting-data-to-contribution-channel)
+  * [ETA Java Consumer - Posting data to Contributions Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/tutorials#eta-tutorial-7-posting-data-to-contributions-channel)
+  * [EMA Java Consumer - Posting data to Contributions Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/tutorials#ema-consumer-posting-data-to-contribution-channel)
+
+2. **Use Refinitiv Real-Time SDKs or WebSocket API for contributing data to RCC via Refinitiv Real-Time Distribution System.** To use this method, please refer to the following the [first article](https://developers.refinitiv.com/en/article-catalog/article/contributing-your-data-refinitiv) and continue on *this article*:
+
+3. **Use Web Socket API to directly connect to RCC to contribute data.** To use this method, please refer to the following the [Contributing Data to Refinitiv Contributions Channel (RCC) via WebSocket tutorial page](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api/tutorials#contributing-data-to-refinitiv-contributions-channel). 
+
+This article is focusing on **the second method** which is contributing data via Refinitiv Real-Time Distribution System servers (Real-Time Advanced Distribution and Advanced Data Hub servers).  The servers will take care of the RCC connection, JSON-OMM conversion, and login process for the application.
 
 ![Figure-1](images/diagram_trcc_ws.png "RCC Contribution Diagram") 
 
@@ -200,8 +212,7 @@ RECEIVED:
 * [Developer Webinar Recording: Introduction to WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
 * [Contributing Data to Refinitiv Real-Time using the Websocket API article](https://developers.refinitiv.com/en/article-catalog/article/contributing-data-trep-using-websocket-api).
 * [Contributing your data to Refinitiv article](https://developers.refinitiv.com/en/article-catalog/article/contributing-your-data-refinitiv).
-<!--* [Refinitiv Elektron: RIC Search](https://developers.refinitiv.com/elektron/websocket-api/dev-tools?type=ric).
-* [Refinitiv Data Model Discovery page](https://refinitiv.fixspec.com/specserver/specs/reuters): Explore TR data models, content definitions and data update behaviors.-->
+* [Contributing Data to Refinitiv Contributions Channel (RCC) via WebSocket Tutorial](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api/tutorials#contributing-data-to-refinitiv-contributions-channel).
 * [EMA Java Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/tutorials#ema-consumer-posting-data-to-contribution-channel).
 * [EMA C++ Tutorial - Posting data to Contribution Channel](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc/tutorials#ema-consumer-posting-data-to-contribution-channel).
 
