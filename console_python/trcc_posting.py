@@ -7,7 +7,7 @@
 
 
 #!/usr/bin/env python
-""" Simple example of posting Market Price JSON data To RCC via TREP 3.2.x using Websockets """
+""" Simple example of posting Market Price JSON data To RCC via Refinitiv Real-Time Distribution System 3.2.x using Websockets """
 
 import sys
 import time
@@ -66,7 +66,7 @@ def process_message(ws, message_json):  # Process all incoming messages.
 # Process incoming Login Refresh Response message.
 def process_login_response(ws, message_json):
     """ Send Off-Stream Post """
-    print("Sending Off-Stream Post to TREP Server")
+    print("Sending Off-Stream Post to Real-Time Advanced Distribution Server")
     send_market_price_post(ws)
 
 
