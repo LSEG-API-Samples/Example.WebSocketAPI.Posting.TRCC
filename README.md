@@ -43,7 +43,7 @@ This article is focusing on **the second method** which is contributing data via
 
 ![Figure-1](images/diagram_trcc_ws.png "RCC Contribution Diagram") 
 
-The Refinitiv Real-Time Advanced Data Hub server connects to RCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. The TSA adapter is already packaged with the  Advanced Data Hub version 3.2, and needs to be configured. You can find more detail regarding the Advanced Data Hub-RCC configurations on [Contributing your data to Refinitiv article](https://developers.refinitiv.com/article/contributing-your-data-thomson-reuters) page. This example also contain example Advanced Data Hub-RCC configurations in *trep_config/rmds_trcc.cnf* file.
+The Refinitiv Real-Time Advanced Data Hub server connects to RCC through the delivery direct network via Tunnel Stream Aggregator (TSA) adapter, which is a private network (TLS encrypted) between a client site and Refinitiv. The TSA adapter is already packaged with the  Advanced Data Hub version 3.2, and needs to be configured. You can find more detail regarding the Advanced Data Hub-RCC configurations on [Contributing your data to Refinitiv article](https://developers.refinitiv.com/en/article-catalog/article/contributing-your-data-refinitiv) page. This example also contain example Advanced Data Hub-RCC configurations in *trep_config/rmds_trcc.cnf* file.
 
 ## Prerequisite
 This example requires the following dependencies softwares and libraries.
