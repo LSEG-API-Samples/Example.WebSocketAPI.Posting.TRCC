@@ -2,12 +2,12 @@
 # |            This source code is provided under the Apache 2.0 license      --
 # |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
 # |                See the project's LICENSE.md for details.                  --
-# |           Copyright Refinitiv 2020. All rights reserved.                  --
+# |           Copyright LSEG 2025. All rights reserved.                       --
 # |-----------------------------------------------------------------------------
 
 
 #!/usr/bin/env python
-""" Simple example of posting Market Price JSON data To RCC via Refinitiv Real-Time Distribution System 3.2.x using Websockets """
+""" Simple example of posting Market Price JSON data To RCC via LSEG Real-Time Distribution System 3.2.x using Websockets """
 
 import sys
 import time
@@ -20,7 +20,7 @@ import os
 from threading import Thread, Event
 
 # Global Default Variables
-hostname = '127.0.0.1'
+hostname = 'ADS_HOST'
 port = '15000'
 user = 'root'
 app_id = '256'
@@ -43,22 +43,22 @@ def process_message(ws, message_json):  # Process all incoming messages.
     """ Parse at high level and output JSON of message """
     message_type = message_json['Type']
 
-    if message_type == "Refresh":
+    if message_type == 'Refresh':
         if 'Domain' in message_json:
             message_domain = message_json['Domain']
-            if message_domain == "Login":
+            if message_domain == 'Login':
                 process_login_response(ws, message_json)
-    elif message_type == "Ping":
+    elif message_type == 'Ping':
         pong_json = {'Type': 'Pong'}
         ws.send(json.dumps(pong_json))
-        print("SENT:")
+        print('SENT:')
         print(json.dumps(pong_json, sort_keys=True,
                          indent=2, separators=(',', ':')))
 
-    """ If our TRI stream is now open, we can start sending posts. """
+    #If our TRI stream is now open, we can start sending posts.
     global next_post_time
     if ('ID' in message_json and message_json['ID'] == 1 and next_post_time == 0 and
-            (not 'State' in message_json or message_json['State']['Stream'] == "Open" and message_json['State']['Data'] == "Ok")):
+            (not 'State' in message_json or message_json['State']['Stream'] == 'Open' and message_json['State']['Data'] == 'Ok')):
         next_post_time = time.time() + 3
         print('Here')
 
@@ -66,7 +66,7 @@ def process_message(ws, message_json):  # Process all incoming messages.
 # Process incoming Login Refresh Response message.
 def process_login_response(ws, message_json):
     """ Send Off-Stream Post """
-    print("Sending Off-Stream Post to Real-Time Advanced Distribution Server")
+    print('Sending Off-Stream Post to Real-Time Advanced Distribution Server')
     send_market_price_post(ws)
 
 
@@ -76,55 +76,55 @@ def send_market_price_post(ws):
     global bid_value
     global ask_value
     global primact_1_value
-    """ Send a post message contains a market-price content to RCC """
+    # Send a post message contains a market-price content to RCC
 
-    """ Contribution fields """
+    # Contribution fields
     contribution_fields = {
-        "BID": bid_value,
-        "ASK": ask_value,
-        "PRIMACT_1": primact_1_value
+        'BID': bid_value,
+        'ASK': ask_value,
+        'PRIMACT_1': primact_1_value
     }
 
-    """ OMM Post msg Key """
+    # OMM Post msg Key
     mp_post_key = {
-        "Name": post_item_name,
-        "Service": service_name
+        'Name': post_item_name,
+        'Service': service_name
     }
 
-    """ OMM Post Payload """
+    # OMM Post Payload
     contribution_payload_json = {
-        "ID": 0,
-        "Type": "Update",
-        "Domain": "MarketPrice",
-        "Fields": contribution_fields,
-        "Key": {}
+        'ID': 0,
+        'Type': 'Update',
+        'Domain': 'MarketPrice',
+        'Fields': contribution_fields,
+        'Key': {}
     }
 
-    """ OMM Off-Stream Post message """
+    # OMM Off-Stream Post message
     mp_post_json_offstream = {
-        "Domain": "MarketPrice",
-        "Ack": True,
-        "PostID": post_id,
-        "PostUserInfo": {
-            "Address": position,
-            "UserID": int(app_id)
+        'Domain': 'MarketPrice',
+        'Ack': True,
+        'PostID': post_id,
+        'PostUserInfo': {
+            'Address': position,
+            'UserID': int(app_id)
         },
-        "Key": {},
-        "Message": {},
-        "Type": "Post",
-        "ID": login_id
+        'Key': {},
+        'Message': {},
+        'Type': 'Post',
+        'ID': login_id
     }
 
-    contribution_payload_json["Key"] = mp_post_key
-    mp_post_json_offstream["Key"] = mp_post_key
-    mp_post_json_offstream["Message"] = contribution_payload_json
+    contribution_payload_json['Key'] = mp_post_key
+    mp_post_json_offstream['Key'] = mp_post_key
+    mp_post_json_offstream['Message'] = contribution_payload_json
 
     ws.send(json.dumps(mp_post_json_offstream))
-    print("SENT:")
+    print('SENT:')
     print(json.dumps(mp_post_json_offstream,
                      sort_keys=True, indent=2, separators=(',', ':')))
 
-    """ increase post data value """
+    # increase post data value
     post_id += 1
     bid_value += 1
     ask_value += 1
@@ -151,13 +151,13 @@ def send_login_request(ws):
     login_json['Key']['Elements']['Position'] = position
 
     ws.send(json.dumps(login_json))
-    print("SENT:")
+    print('SENT:')
     print(json.dumps(login_json, sort_keys=True, indent=2, separators=(',', ':')))
 
 
 def on_message(ws, message):
     """ Called when message received, parse message into JSON for processing """
-    print("RECEIVED: ")
+    print('RECEIVED: ')
     message_json = json.loads(message)
     print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
@@ -170,56 +170,56 @@ def on_error(ws, error):
     print(error)
 
 
-def on_close(ws):
+def on_close(ws, close_status_code, close_msg):
     """ Called when websocket is closed """
     global web_socket_open
-    print("WebSocket Closed")
+    print(f'WebSocket Closed: {close_status_code} {close_msg}')
     web_socket_open = False
 
 
 def on_open(ws):
     """ Called when handshake is complete and websocket is open, send login """
 
-    print("WebSocket successfully connected!")
+    print('WebSocket successfully connected!')
     global web_socket_open
     web_socket_open = True
     send_login_request(ws)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     # Get command line parameters
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "", [
-                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "item=", "service="])
+        opts, args = getopt.getopt(sys.argv[1:], '', [
+                                   'help', 'hostname=', 'port=', 'app_id=', 'user=', 'position=', 'item=', 'service='])
         print(opts)
     except getopt.GetoptError:
         print(
             'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post item name] [--service TRCC Post Service]  [--help] ')
         sys.exit(2)
     for opt, arg in opts:
-        if opt in ("--help"):
+        if opt in ('--help'):
             print(
                 'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--item post item name] [--service TRCC Post Service] [--help]')
             sys.exit(0)
-        elif opt in ("--hostname"):
+        elif opt in ('--hostname'):
             hostname = arg
-        elif opt in ("--port"):
+        elif opt in ('--port'):
             port = arg
-        elif opt in ("--app_id"):
+        elif opt in ('--app_id'):
             app_id = arg
-        elif opt in ("--user"):
+        elif opt in ('--user'):
             user = arg
-        elif opt in ("--position"):
+        elif opt in ('--position'):
             position = arg
-        elif opt in ("--item"):
+        elif opt in ('--item'):
             post_item_name = arg
-        elif opt in ("--service"):
+        elif opt in ('--service'):
             service_name = arg
 
     # Start websocket handshake
-    ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
-    print("Connecting to WebSocket " + ws_address + " ...")
+    ws_address = f'ws://{hostname}:{port}/WebSocket'
+    print(f'Connecting to WebSocket {ws_address} .... ')
     web_socket_app = websocket.WebSocketApp(ws_address, header=['User-Agent: Python'],
                                             on_message=on_message,
                                             on_error=on_error,

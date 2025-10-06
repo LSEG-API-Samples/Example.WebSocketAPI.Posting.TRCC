@@ -4,3 +4,7 @@ result/
 notebook_python/test_ws_post.ipynb
 notebook_python/test_ws_post2.ipynb
 notebook_python/.ipynb_checkpoints
+venv/
+nbvenv/
+run.txt
+console_python/nbvenv/
